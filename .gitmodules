@@ -1,0 +1,9 @@
+[submodule "devicescript"]
+	path = devicescript
+	url = https://github.com/microsoft/devicescript
+[submodule "jacdac-stm32x0"]
+	path = jacdac-stm32x0
+	url = https://github.com/microsoft/jacdac-stm32x0
+[submodule "STM32CubeL4"]
+	path = STM32CubeL4
+	url = https://github.com/STMicroelectronics/STM32CubeL4
