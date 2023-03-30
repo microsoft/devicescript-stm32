@@ -1,7 +1,8 @@
 _IGNORE0 := $(shell test -f Makefile.user || cp sample-Makefile.user Makefile.user)
 
 include Makefile.user
-BUILD_ARCH ?= stm32l4
+MCU ?= L475VG
+BUILD_ARCH = stm32$(subst L,l,$(subst V,v,$(subst G,g,$(MCU))))
 BOARD ?= $(shell basename `cd boards/$(BUILD_ARCH); ls *.board.json | head -1` .board.json)
 
 BUILD = build/$(BUILD_ARCH)
@@ -12,7 +13,7 @@ ELF = $(BUILD)/src/$(EXE).elf
 UF2 = $(BUILD)/src/$(EXE).uf2
 
 all: submodules refresh-version
-	cd $(BUILD) && cmake ../.. $(CMAKE_OPTIONS)
+	cd $(BUILD) && cmake ../.. $(CMAKE_OPTIONS) -DMCU=$(MCU)
 	$(MAKE) -j16 -C $(BUILD)
 	$(MAKE) concat-configs
 

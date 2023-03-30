@@ -7,3 +7,6 @@
 [submodule "STM32CubeL4"]
 	path = STM32CubeL4
 	url = https://github.com/STMicroelectronics/STM32CubeL4
+[submodule "stm32-cmake"]
+	path = stm32-cmake
+	url = https://github.com/ObKo/stm32-cmake
