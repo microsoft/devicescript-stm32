@@ -12,8 +12,8 @@ void app_init_services(void) {
 
 uint32_t random_int(uint32_t max);
 
-int main() {
-    platform_init();
+int main(void) {
+    // platform_init();
     jd_init();
 
     flash_sync();
@@ -50,4 +50,9 @@ void hw_panic(void) {
         led_panic_blink();
     }
     target_reset();
+}
+
+int *__errno(void) {
+    static int err;
+    return &err;
 }

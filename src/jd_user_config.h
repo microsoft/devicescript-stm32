@@ -52,4 +52,6 @@
 #define PIN_LED PA_5
 #define PIN_LED_GND NO_PIN
 
+#define JD_ANALOG 0
+
 #endif
