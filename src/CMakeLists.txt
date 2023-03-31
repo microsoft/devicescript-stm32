@@ -1,6 +1,7 @@
 file(GLOB RUNNER_FILES *.c)
 
-add_executable(devsrunner
+set(EXECUTABLE devsrunner)
+add_executable(${EXECUTABLE}
     ${RUNNER_FILES}
     ${CMAKE_BINARY_DIR}/version.c
 )
@@ -9,13 +10,28 @@ include_directories(AFTER
     "."
 )
 
-target_link_libraries(devsrunner PUBLIC
-    CMSIS::STM32::${FAMILY}
-    STM32::NoSys
-    STM32::Nano
+target_link_options(${EXECUTABLE} PRIVATE
+        -T${STM32_CUBE_PATH}/Projects/B-L475E-IOT01A/Templates_LL/SW4STM32/B-L475E-IOT01/STM32L475VGTx_FLASH.ld
+        ${ARCH_FLAGS}
+        -specs=nosys.specs
+        -specs=nano.specs
+        -lc
+        -lm
+        -Wl,-Map=${EXECUTABLE}.map,--cref
+        -Wl,--gc-sections
+        )
+
+target_link_libraries(${EXECUTABLE} PUBLIC
     jacdac
     devicescript
     jacdac-stm32
 )
 
-stm32_print_size_of_target(devsrunner)
+add_custom_command(TARGET ${EXECUTABLE}
+        POST_BUILD
+        COMMAND arm-none-eabi-size ${EXECUTABLE})
+
+add_custom_command(TARGET ${EXECUTABLE}
+        POST_BUILD
+        COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
+        COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin)
