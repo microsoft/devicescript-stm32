@@ -9,5 +9,13 @@ include_directories(AFTER
     "."
 )
 
-target_link_libraries(devsrunner CMSIS::STM32::${MCU} STM32::NoSys)
+target_link_libraries(devsrunner PUBLIC
+    CMSIS::STM32::${FAMILY}
+    STM32::NoSys
+    STM32::Nano
+    jacdac
+    devicescript
+    jacdac-stm32
+)
+
 stm32_print_size_of_target(devsrunner)

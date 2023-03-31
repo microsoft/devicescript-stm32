@@ -18,6 +18,9 @@ add_compile_options(-Wall
     -Wno-maybe-uninitialized
     -Wno-zero-length-bounds
     -ffunction-sections
+    -DSTM32${FAMILY}=1
+    -DSTM32L475xx=1
+    -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 )
 
 include(${CMAKE_BINARY_DIR}/config.cmake)
@@ -28,3 +31,4 @@ add_subdirectory(src)
 set(JACDAC_USER_CONFIG_DIR "../../../src")
 add_subdirectory(devicescript/runtime/jacdac-c)
 add_subdirectory(devicescript/runtime/devicescript)
+add_subdirectory(jacdac-stm32x0)
