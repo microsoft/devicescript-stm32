@@ -1,6 +1,8 @@
 file(GLOB RUNNER_FILES *.c)
 
-set(EXECUTABLE devsrunner)
+set(BASE_EXEC devsrunner)
+set(EXECUTABLE devsrunner.elf)
+
 add_executable(${EXECUTABLE}
     ${RUNNER_FILES}
     ${CMAKE_BINARY_DIR}/version.c
@@ -33,5 +35,5 @@ add_custom_command(TARGET ${EXECUTABLE}
 
 add_custom_command(TARGET ${EXECUTABLE}
         POST_BUILD
-        COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
-        COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin)
+        COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${BASE_EXEC}.hex
+        COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${BASE_EXEC}.bin)

@@ -102,5 +102,8 @@ dist:
 st:
 	node $(JDC)/scripts/map-file-stats.js $(ELF).map
 
+sta:
+	node $(JDC)/scripts/map-file-stats.js $(ELF).map -file
+
 stf:
 	node $(JDC)/scripts/map-file-stats.js $(ELF).map -fun
