@@ -34,6 +34,8 @@
 #define JD_DCFG_BASE_ADDR (JD_FSTOR_BASE_ADDR - 16 * 1024)
 
 #define JD_HW_ALLOC 1
+#define JD_STACK_SIZE 4096
+
 #define JD_I2C_HELPERS 1
 // #define JD_HID 1
 

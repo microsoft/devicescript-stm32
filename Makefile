@@ -5,6 +5,9 @@ MCU ?= L475VG
 BUILD_ARCH = stm32$(subst L,l,$(subst V,v,$(subst G,g,$(MCU))))
 BOARD ?= $(shell basename `cd boards/$(BUILD_ARCH); ls *.board.json | head -1` .board.json)
 
+# this requires 'st-util' running
+BMP_PORT = :4242
+
 BUILD = build/$(BUILD_ARCH)
 JDC = devicescript/runtime/jacdac-c
 CLI = node devicescript/cli/devicescript 
@@ -15,14 +18,12 @@ UF2 = $(BUILD)/src/$(EXE).uf2
 all: submodules refresh-version
 	cd $(BUILD) && cmake ../.. $(CMAKE_OPTIONS) -DMCU=$(MCU)
 	$(MAKE) -j16 -C $(BUILD)
-	$(MAKE) concat-configs
+#	$(MAKE) concat-configs
 
 r: flash
 f: flash
 
-flash: all boot
-	sleep 2
-	cp dist/devicescript-$(BUILD_ARCH)-$(BOARD).uf2 /Volumes/RPI-RP2
+flash: all load-gdb
 
 submodules: STM32CubeL4/README.md $(JDC)/jacdac/README.md \
 	$(BUILD)/config.cmake \
@@ -60,23 +61,11 @@ prep-build-gdb:
 	echo > $(BUILD)/debug.gdb
 	echo "file $(ELF)" >> $(BUILD)/debug.gdb
 	echo "target extended-remote $(BMP_PORT)" >> $(BUILD)/debug.gdb
-	echo "monitor connect_srst disable" >> $(BUILD)/debug.gdb
-	echo "monitor swdp_scan" >> $(BUILD)/debug.gdb
-	echo "attach 1" >> $(BUILD)/debug.gdb
-
-boot: prep-build-gdb
-	echo 'mon reset_usb_boot' >> $(BUILD)/debug.gdb
-	echo "quit" >> $(BUILD)/debug.gdb
-	arm-none-eabi-gdb --command=$(BUILD)/debug.gdb $(ELF) < /dev/null
 
 load-gdb: prep-build-gdb
 	echo 'load' >> $(BUILD)/debug.gdb
 	echo "quit" >> $(BUILD)/debug.gdb
 	arm-none-eabi-gdb --command=$(BUILD)/debug.gdb $(ELF) < /dev/null
-
-rg: all
-	$(MAKE) boot
-	$(MAKE) load-gdb
 
 gdb: prep-build-gdb
 	arm-none-eabi-gdb --command=$(BUILD)/debug.gdb $(ELF)

@@ -2,7 +2,7 @@
 
 #include "jd_client.h"
 #include "devicescript.h"
-#include "pinnames.h"
+#include "jdstm.h"
 #include "services/jd_services.h"
 #include "services/interfaces/jd_pins.h"
 #include "services/interfaces/jd_flash.h"

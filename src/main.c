@@ -12,12 +12,18 @@ void app_init_services(void) {
 
 uint32_t random_int(uint32_t max);
 
-int main(void) {
-    // platform_init();
+void platform_init(void) {
+    tim_init();
+    // adc_init_random();
+    rtc_init();
+    uart_init_();
     jd_init();
+}
+
+int main(void) {
+    platform_init();
 
     flash_sync();
-
     // link custom memcpy()
     random_int(1);
 
@@ -46,6 +52,10 @@ static void led_panic_blink(void) {
 void hw_panic(void) {
     DMESG("PANIC!");
     target_disable_irq();
+
+    // if (CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)
+    //    __asm__ __volatile__("bkpt #0");
+
     for (int i = 0; i < 60; ++i) {
         led_panic_blink();
     }
