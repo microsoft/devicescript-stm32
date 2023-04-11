@@ -6,7 +6,9 @@ BUILD_ARCH = stm32$(subst L,l,$(subst V,v,$(subst G,g,$(MCU))))
 BOARD ?= $(shell basename `cd boards/$(BUILD_ARCH); ls *.board.json | head -1` .board.json)
 
 # this requires 'st-util' running
-BMP_PORT = :4242
+# BMP_PORT = :4242
+# this requires 'openocd' running
+# BMP_PORT ?= :3333
 
 BUILD = build/$(BUILD_ARCH)
 JDC = devicescript/runtime/jacdac-c
@@ -61,6 +63,8 @@ prep-build-gdb:
 	echo > $(BUILD)/debug.gdb
 	echo "file $(ELF)" >> $(BUILD)/debug.gdb
 	echo "target extended-remote $(BMP_PORT)" >> $(BUILD)/debug.gdb
+	echo "monitor swdp_scan" >> $(BUILD)/debug.gdb
+	echo "attach 1" >> $(BUILD)/debug.gdb
 
 load-gdb: prep-build-gdb
 	echo 'load' >> $(BUILD)/debug.gdb
@@ -96,3 +100,6 @@ sta:
 
 stf:
 	node $(JDC)/scripts/map-file-stats.js $(ELF).map -fun
+
+ocd:
+	openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c 'gdb_memory_map disable'

@@ -15,9 +15,8 @@ include_directories(AFTER
 target_link_options(${EXECUTABLE} PRIVATE
         -T${STM32_CUBE_PATH}/Projects/B-L475E-IOT01A/Templates_LL/SW4STM32/B-L475E-IOT01/STM32L475VGTx_FLASH.ld
         ${ARCH_FLAGS}
-        -specs=nosys.specs
         -specs=nano.specs
-        -lc
+        -specs=nosys.specs
         -lm
         -Wl,-Map=${EXECUTABLE}.map,--cref
         -Wl,--gc-sections
