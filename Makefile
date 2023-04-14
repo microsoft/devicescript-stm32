@@ -74,7 +74,10 @@ load-gdb: prep-build-gdb
 gdb: prep-build-gdb
 	arm-none-eabi-gdb --command=$(BUILD)/debug.gdb $(ELF)
 
-bump:
+update-devs: devicescript/cli/built/devicescript-cli.cjs
+	node devicescript/scripts/bumparch.mjs --update
+
+bump: update-devs
 	node devicescript/scripts/bumparch.mjs
 
 concat-configs:
