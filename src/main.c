@@ -3,7 +3,7 @@
 uint32_t now;
 
 void app_init_services(void) {
-    devs_service_full_init(NULL);
+    devs_service_full_init();
     if (i2c_init_() == 0) {
         jd_scan_all();
         i2cserv_init();
@@ -63,8 +63,6 @@ int main(void) {
     // link custom memcpy()
     random_int(1);
 
-    tim_max_sleep = 1000;
-
     while (true) {
         jd_process_everything();
 #if JD_WIFI
@@ -92,7 +90,6 @@ void hw_panic(void) {
     // if (CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)
     //    __asm__ __volatile__("bkpt #0");
 
-
 #ifdef JD_INFINITE_PANIC
     for (;;)
         led_panic_blink();
@@ -108,3 +105,9 @@ int *__errno(void) {
     static int err;
     return &err;
 }
+
+void jd_crypto_get_random(uint8_t *trg, unsigned size) {
+    JD_PANIC(); // not impl. yet
+}
+
+void power_pin_enable(int en) {}

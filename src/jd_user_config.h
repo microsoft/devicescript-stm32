@@ -56,4 +56,6 @@
 
 #define JD_ANALOG 0
 
+#define JD_FSTOR_MAX_DATA_PAGES (512 / 4)
+
 #endif
